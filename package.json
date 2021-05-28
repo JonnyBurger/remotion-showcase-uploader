@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "yarn lint && next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "yarn eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "yarn lint",
     "test": "jest",
