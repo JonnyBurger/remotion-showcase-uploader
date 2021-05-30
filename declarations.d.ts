@@ -14,8 +14,8 @@ interface MediaTrackConstraintSet {
 declare module 'mux-embed' {
 	export function monitor(
 		video: HTMLVideoElement,
-		options: Record<string, any>
-	); // eslint-disable-line @typescript-eslint/no-explicit-any
+		options: Record<string, unknown>
+	);
 }
 
 type NoProps = Record<never, never>;

@@ -25,6 +25,7 @@ export default async (
 				console.error('Request error', e); // eslint-disable-line no-console
 				res.json({error: 'Error getting upload/asset'});
 			}
+
 			break;
 		default:
 			res.setHeader('Allow', ['GET']);

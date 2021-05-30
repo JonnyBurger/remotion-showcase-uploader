@@ -1,9 +1,8 @@
-/* globals Image */
 import Hls from 'hls.js';
 import mux from 'mux-embed';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
-import {forwardRef, useEffect, useRef, useState} from 'react';
+import {forwardRef, useCallback, useEffect, useRef, useState} from 'react';
 import logger from '../lib/logger';
 import {breakpoints} from '../style-vars';
 import {HTMLVideoElementWithPlyr} from '../types';
@@ -52,18 +51,24 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 		const [isVertical, setIsVertical] = useState<boolean | null>();
 		const [playerInitTime] = useState(Date.now());
 
-		const videoError = (event: ErrorEvent) => onError(event);
+		const videoError = useCallback(
+			(event: ErrorEvent) => onError(event),
+			[onError]
+		);
 
-		const onImageLoad = (event: SizedEvent) => {
-			const [w, h] = [event.target.width, event.target.height];
-			if (w && h) {
-				setIsVertical(w / h < 1);
-				onLoaded();
-			} else {
-				onLoaded();
-				console.error('Error getting img dimensions', event); // eslint-disable-line no-console
-			}
-		};
+		const onImageLoad = useCallback(
+			(event: SizedEvent) => {
+				const [w, h] = [event.target.width, event.target.height];
+				if (w && h) {
+					setIsVertical(w / h < 1);
+					onLoaded();
+				} else {
+					onLoaded();
+					console.error('Error getting img dimensions', event); // eslint-disable-line no-console
+				}
+			},
+			[onLoaded]
+		);
 
 		/*
 		 * See comment above -- we're loading the poster image just so we can grab the dimensions
@@ -73,7 +78,7 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 			const img = new Image();
 			img.onload = (evt) => onImageLoad(evt as unknown as SizedEvent);
 			img.src = poster;
-		}, []);
+		}, [onImageLoad, poster]);
 
 		useEffect(() => {
 			const video = videoRef.current;
@@ -102,7 +107,7 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 					hls = new Hls();
 					hls.loadSource(src);
 					hls.attachMedia(video);
-					hls.on(Hls.Events.ERROR, function (event, data) {
+					hls.on(Hls.Events.ERROR, (event, data) => {
 						if (data.fatal) {
 							logger.error('hls.js fatal error');
 							videoError(new ErrorEvent('HLS.js fatal error'));
@@ -136,11 +141,12 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 				if (video) {
 					video.removeEventListener('error', videoError);
 				}
+
 				if (hls) {
 					hls.destroy();
 				}
 			};
-		}, [playbackId, videoRef]);
+		}, [playbackId, playerInitTime, videoError, videoRef]);
 
 		useEffect(() => {
 			const video = videoRef.current;

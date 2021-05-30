@@ -1,4 +1,3 @@
-import got from 'got';
 import {NextApiRequest, NextApiResponse} from 'next';
 import {sendAbuseReport} from '../../lib/slack-notifier';
 
@@ -11,26 +10,6 @@ const notify = async ({
 	reason: string;
 	comment?: string;
 }) => {
-	if (process.env.AIRTABLE_KEY && process.env.AIRTABLE_BASE_ID) {
-		try {
-			await got.post(
-				`https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/Reported`,
-				{
-					headers: {
-						Authorization: `Bearer ${process.env.AIRTABLE_KEY}`,
-					},
-					json: {
-						records: [
-							{fields: {playbackId, reason, comment, status: 'Pending'}},
-						],
-					},
-				}
-			);
-		} catch (e) {
-			console.error('Error reporting to airtable', e); // eslint-disable-line no-console
-		}
-	}
-
 	try {
 		await sendAbuseReport({playbackId, reason, comment});
 	} catch (e) {
