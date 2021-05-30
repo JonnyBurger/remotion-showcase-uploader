@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@google-cloud/vision": "^2.3.2",
+    "@jonny/eslint-config": "^2.1.233",
     "@mux/mux-node": "^3.0",
     "@mux/upchunk": "^2.2",
     "copy-to-clipboard": "^3.3.1",
@@ -21,12 +22,12 @@
     "micro": "9.3.5-canary.3",
     "mux-embed": "^3.3.0",
     "next": "^10.0.1",
+    "next-secure-headers": "^2.0.0",
     "plyr": "^3.6.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.0.2",
-    "swr": "^0.2.0",
-    "next-secure-headers": "^2.0.0"
+    "swr": "^0.2.0"
   },
   "devDependencies": {
     "@types/dom-mediacapture-record": "^1.0.7",

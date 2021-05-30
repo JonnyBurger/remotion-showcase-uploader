@@ -1,18 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
-function logger (...args: any): void {
-  args.unshift('[stream.new]');
+function logger(...args: any): void {
+  args.unshift("[remotion-showcase]");
   console.log(...args); // eslint-disable-line no-console
 }
 
-logger.warn = function loggerWarn (...args: any) {
-  args.unshift('[stream.new]');
+logger.warn = function loggerWarn(...args: any) {
+  args.unshift("[remotion-showcase]");
   console.warn(...args); // eslint-disable-line no-console
 };
 
-logger.error = function loggerError (...args: any) {
-  args.unshift('[stream.new]');
+logger.error = function loggerError(...args: any) {
+  args.unshift("[remotion-showcase]");
   console.warn(...args); // eslint-disable-line no-console
 };
 
