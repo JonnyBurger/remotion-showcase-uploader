@@ -7,9 +7,3 @@ export enum RecordState {
 export interface HTMLVideoElementWithPlyr extends HTMLVideoElement {
 	plyr: Plyr;
 }
-
-export type ModerationScores = {
-	adult?: number;
-	violence?: number;
-	racy?: number;
-};

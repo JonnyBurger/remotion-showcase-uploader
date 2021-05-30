@@ -1,5 +1,4 @@
 import {HOST_URL} from '../constants';
-import {ModerationScores} from '../types';
 import got from './got-client';
 
 const slackWebhook = process.env.SLACK_WEBHOOK_ASSET_READY;
@@ -109,12 +108,10 @@ export const sendSlackAssetReady = async ({
 	playbackId,
 	assetId,
 	duration,
-	moderationScores,
 }: {
 	playbackId: string;
 	assetId: string;
 	duration: number;
-	moderationScores?: ModerationScores;
 }): Promise<null> => {
 	if (!slackWebhook) {
 		console.log('No slack webhook configured'); // eslint-disable-line no-console
@@ -122,16 +119,6 @@ export const sendSlackAssetReady = async ({
 	}
 
 	const blocks = baseBlocks({playbackId, assetId, duration});
-
-	if (moderationScores) {
-		blocks.push({
-			type: 'section',
-			text: {
-				type: 'mrkdwn',
-				text: `*Moderation scores:*\n ${JSON.stringify(moderationScores)}`,
-			},
-		});
-	}
 
 	if (moderatorPassword) {
 		blocks.push({

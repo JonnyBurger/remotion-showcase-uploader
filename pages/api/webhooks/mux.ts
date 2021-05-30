@@ -1,7 +1,6 @@
 import Mux from '@mux/mux-node';
 import {buffer} from 'micro';
 import {NextApiRequest, NextApiResponse} from 'next';
-import {getScores} from '../../../lib/moderation';
 import {sendSlackAssetReady} from '../../../lib/slack-notifier';
 
 const webhookSignatureSecret = process.env.MUX_WEBHOOK_SIGNATURE_SECRET;
@@ -70,12 +69,10 @@ export default async function muxWebhookHandler(
 				const playbackId = data.playback_ids?.[0]?.id;
 				const {duration} = data;
 
-				const moderationScores = await getScores({playbackId, duration});
 				await sendSlackAssetReady({
 					assetId: data.id,
 					playbackId,
 					duration,
-					moderationScores,
 				});
 				res.json({message: 'thanks Mux, I notified myself about this'});
 			} catch (e) {

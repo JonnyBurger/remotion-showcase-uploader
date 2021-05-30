@@ -5,7 +5,7 @@ import Asterisk from '../../../components/asterisk';
 import FullpageLoader from '../../../components/fullpage-loader';
 import Layout from '../../../components/layout';
 import VideoPlayer from '../../../components/video-player';
-import {HOST_URL, MUX_HOME_PAGE_URL, OPEN_SOURCE_URL} from '../../../constants';
+import {HOST_URL} from '../../../constants';
 import logger from '../../../lib/logger';
 import {HTMLVideoElementWithPlyr} from '../../../types';
 
@@ -144,17 +144,6 @@ const PlaybackEmbedded: React.FC<Props> = ({playbackId, poster}) => {
 								<a href={nonEmbedUrl} target="_blank" rel="noreferrer">
 									stream.new
 								</a>
-							</p>
-							<p>
-								This is an{' '}
-								<a href={OPEN_SOURCE_URL} target="_blank" rel="noreferrer">
-									open source
-								</a>{' '}
-								project from{' '}
-								<a href={MUX_HOME_PAGE_URL} target="_blank" rel="noreferrer">
-									Mux
-								</a>
-								, the video streaming API.
 							</p>
 						</div>
 						<p>
