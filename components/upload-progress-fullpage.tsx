@@ -1,175 +1,175 @@
-import { useState, useEffect, useCallback } from "react";
-import Router from "next/router";
-import * as UpChunk from "@mux/upchunk";
-import useSwr from "swr";
-import Layout from "./layout";
-import Button from "./button";
+import * as UpChunk from '@mux/upchunk';
+import Router from 'next/router';
+import {useCallback, useEffect, useState} from 'react';
+import useSwr from 'swr';
+import Button from './button';
+import Layout from './layout';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const MAX_VIDEO_DURATION_MIN = 60;
 
 type Props = {
-  file: File;
-  resetPage: () => void;
+	file: File;
+	resetPage: () => void;
 };
 
-const UploadProgressFullpage: React.FC<Props> = ({ file, resetPage }) => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadId, setUploadId] = useState("");
-  const [progress, setProgress] = useState(0);
-  const [isPreparing, setIsPreparing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+const UploadProgressFullpage: React.FC<Props> = ({file, resetPage}) => {
+	const [isUploading, setIsUploading] = useState(false);
+	const [uploadId, setUploadId] = useState('');
+	const [progress, setProgress] = useState(0);
+	const [isPreparing, setIsPreparing] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
-  const { data, error } = useSwr(
-    () => (isPreparing ? `/api/uploads/${uploadId}` : null),
-    fetcher,
-    { refreshInterval: 5000 }
-  );
+	const {data, error} = useSwr(
+		() => (isPreparing ? `/api/uploads/${uploadId}` : null),
+		fetcher,
+		{refreshInterval: 5000}
+	);
 
-  const upload = data?.upload;
+	const upload = data?.upload;
 
-  const createUpload = async () => {
-    try {
-      return fetch("/api/uploads", {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then(({ id, url }) => {
-          setUploadId(id);
-          return url;
-        });
-    } catch (e) {
-      console.error("Error in createUpload", e); // eslint-disable-line no-console
-      setErrorMessage("Error creating upload");
-      return Promise.reject(e);
-    }
-  };
+	const createUpload = async () => {
+		try {
+			return fetch('/api/uploads', {
+				method: 'POST',
+			})
+				.then((res) => res.json())
+				.then(({id, url}) => {
+					setUploadId(id);
+					return url;
+				});
+		} catch (e) {
+			console.error('Error in createUpload', e); // eslint-disable-line no-console
+			setErrorMessage('Error creating upload');
+			return Promise.reject(e);
+		}
+	};
 
-  const startUpload = useCallback(
-    (_file: File) => {
-      if (isUploading) {
-        return;
-      }
+	const startUpload = useCallback(
+		(_file: File) => {
+			if (isUploading) {
+				return;
+			}
 
-      setIsUploading(true);
-      try {
-        const upChunk = UpChunk.createUpload({
-          endpoint: createUpload,
-          maxFileSize: 2 ** 20, // 1GB
-          file: _file,
-        });
+			setIsUploading(true);
+			try {
+				const upChunk = UpChunk.createUpload({
+					endpoint: createUpload,
+					maxFileSize: 2 ** 20, // 1GB
+					file: _file,
+				});
 
-        upChunk.on("error", (err: { detail: string }) => {
-          setErrorMessage(err.detail);
-        });
+				upChunk.on('error', (err: {detail: string}) => {
+					setErrorMessage(err.detail);
+				});
 
-        upChunk.on("progress", (progressEvt: { detail: number }) => {
-          setProgress(Math.floor(progressEvt.detail));
-        });
+				upChunk.on('progress', (progressEvt: {detail: number}) => {
+					setProgress(Math.floor(progressEvt.detail));
+				});
 
-        upChunk.on("success", () => {
-          setIsPreparing(true);
-        });
-      } catch (err) {
-        setErrorMessage(err.toString());
-      }
-    },
-    [isUploading]
-  );
+				upChunk.on('success', () => {
+					setIsPreparing(true);
+				});
+			} catch (err) {
+				setErrorMessage(err.toString());
+			}
+		},
+		[isUploading]
+	);
 
-  useEffect(() => {
-    if (upload?.asset_id) {
-      Router.push({
-        pathname: `/assets/${upload.asset_id}`,
-      });
-    }
-  }, [upload]);
+	useEffect(() => {
+		if (upload?.asset_id) {
+			Router.push({
+				pathname: `/assets/${upload.asset_id}`,
+			});
+		}
+	}, [upload]);
 
-  const startFileValidation = useCallback(
-    (_file: File): Promise<void> => {
-      return new Promise((resolve, reject) => {
-        // Attempt to load the file as a video element and inspect its duration
-        // metadata. This is not an authoritative check of video duration, but
-        // rather intended to serve as just a simple and fast sanity check.
-        if (!_file.type.includes("video")) {
-          console.warn(`file type (${_file.type}) does not look like video!`);
-          resolve();
-        }
+	const startFileValidation = useCallback(
+		(_file: File): Promise<void> => {
+			return new Promise((resolve, reject) => {
+				// Attempt to load the file as a video element and inspect its duration
+				// metadata. This is not an authoritative check of video duration, but
+				// rather intended to serve as just a simple and fast sanity check.
+				if (!_file.type.includes('video')) {
+					console.warn(`file type (${_file.type}) does not look like video!`);
+					resolve();
+				}
 
-        const video = document.createElement("video");
-        video.preload = "metadata";
-        video.onloadedmetadata = function () {
-          URL.revokeObjectURL(video.src);
-          if (
-            video.duration !== Infinity &&
-            video.duration > MAX_VIDEO_DURATION_MIN * 60
-          ) {
-            const dur = Math.round(video.duration * 100) / 100;
-            // eslint-disable-next-line prefer-promise-reject-errors
-            reject(
-              `file duration (${dur.toString()}s) exceeds allowed maximum (${MAX_VIDEO_DURATION_MIN}min)!`
-            );
-          }
+				const video = document.createElement('video');
+				video.preload = 'metadata';
+				video.onloadedmetadata = function () {
+					URL.revokeObjectURL(video.src);
+					if (
+						video.duration !== Infinity &&
+						video.duration > MAX_VIDEO_DURATION_MIN * 60
+					) {
+						const dur = Math.round(video.duration * 100) / 100;
+						// eslint-disable-next-line prefer-promise-reject-errors
+						reject(
+							`file duration (${dur.toString()}s) exceeds allowed maximum (${MAX_VIDEO_DURATION_MIN}min)!`
+						);
+					}
 
-          resolve();
-        };
+					resolve();
+				};
 
-        video.onerror = function () {
-          // The file has a video MIME type, but we were unable to load its
-          // metadata for some reason.
-          console.warn("failed to load video file metadata for validation!");
-          URL.revokeObjectURL(video.src);
-          resolve();
-        };
+				video.onerror = function () {
+					// The file has a video MIME type, but we were unable to load its
+					// metadata for some reason.
+					console.warn('failed to load video file metadata for validation!');
+					URL.revokeObjectURL(video.src);
+					resolve();
+				};
 
-        video.src = URL.createObjectURL(file);
-      });
-    },
-    [file]
-  );
+				video.src = URL.createObjectURL(file);
+			});
+		},
+		[file]
+	);
 
-  useEffect(() => {
-    if (!file) {
-      return;
-    }
+	useEffect(() => {
+		if (!file) {
+			return;
+		}
 
-    startFileValidation(file)
-      .then(() => {
-        startUpload(file);
-      })
-      .catch((err) => {
-        setErrorMessage(err);
-      });
-  }, [file, startFileValidation, startUpload]);
+		startFileValidation(file)
+			.then(() => {
+				startUpload(file);
+			})
+			.catch((err) => {
+				setErrorMessage(err);
+			});
+	}, [file, startFileValidation, startUpload]);
 
-  return (
-    <Layout centered spinningLogo>
-      {errorMessage || error ? (
-        <div>
-          <h1>Oops there was a problem uploading your file!</h1>
-          <p>{(error && "Error fetching API") || errorMessage}</p>
-          <Button onClick={resetPage}>Start over</Button>
-        </div>
-      ) : (
-        <div className="percent">
-          <h1>{progress ? `${progress}` : "0"}</h1>
-        </div>
-      )}
-      <style jsx>
-        {`
-          .percent {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-          }
+	return (
+		<Layout centered spinningLogo>
+			{errorMessage || error ? (
+				<div>
+					<h1>Oops there was a problem uploading your file!</h1>
+					<p>{(error && 'Error fetching API') || errorMessage}</p>
+					<Button onClick={resetPage}>Start over</Button>
+				</div>
+			) : (
+				<div className="percent">
+					<h1>{progress ? `${progress}` : '0'}</h1>
+				</div>
+			)}
+			<style jsx>
+				{`
+					.percent {
+						flex-grow: 1;
+						display: flex;
+						align-items: center;
+					}
 
-          .percent h1 {
-            font-size: 8vw;
-          }
-        `}
-      </style>
-    </Layout>
-  );
+					.percent h1 {
+						font-size: 8vw;
+					}
+				`}
+			</style>
+		</Layout>
+	);
 };
 
 export default UploadProgressFullpage;
