@@ -8,32 +8,8 @@ import {breakpoints, transitionDuration} from '../style-vars';
 import Asterisk from './asterisk';
 import InfoModal from './info-modal';
 
-type AsteriskProps = {
-	spinning?: boolean;
-};
-
-const AsteriskLink: React.FC<AsteriskProps> = ({spinning}) => {
-	return (
-		<>
-			<Link href="/">
-				<a>
-					<Asterisk />
-				</a>
-			</Link>
-			<style jsx>{`
-				a {
-					animation: ${spinning ? 'rotation 4s linear infinite' : 'none'};
-					width: 46px;
-					height: 46px;
-					display: block;
-				}
-
-				a:hover {
-					opacity: 0.5;
-				}
-			`}</style>
-		</>
-	);
+const AsteriskLink: React.FC = () => {
+	return <Asterisk />;
 };
 
 const FOOTER_HEIGHT = '100px';
@@ -47,7 +23,6 @@ type Props = {
 	onFileDrop?: (acceptedFiles: File[]) => void;
 	darkMode?: boolean;
 	centered?: boolean;
-	spinningLogo?: boolean;
 	backNav?: boolean;
 };
 
@@ -60,7 +35,6 @@ const Layout: React.FC<Props> = ({
 	onFileDrop,
 	darkMode,
 	centered,
-	spinningLogo,
 	backNav,
 	children,
 }) => {
@@ -128,8 +102,10 @@ const Layout: React.FC<Props> = ({
 								</>
 							)}
 						</div>
-						<div className="footer-link">
-							<AsteriskLink spinning={spinningLogo} />
+						<div>
+							<Link href="/">
+								<AsteriskLink />
+							</Link>
 						</div>
 					</footer>
 				</div>
@@ -143,9 +119,6 @@ const Layout: React.FC<Props> = ({
 							height: 100%;
 							z-index: 2;
 							width: 100%;
-						}
-						.spinning {
-							animation: rotation 2s infinite linear;
 						}
 						.content-wrapper-centered {
 							display: flex;
