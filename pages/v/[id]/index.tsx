@@ -1,4 +1,3 @@
-import copy from 'copy-to-clipboard';
 import {GetStaticPaths, GetStaticProps} from 'next';
 import {useRouter} from 'next/router';
 import {useEffect, useRef, useState} from 'react';
@@ -15,7 +14,6 @@ type Params = {
 
 export type Props = {
 	playbackId: string;
-	shareUrl: string;
 	poster: string;
 };
 
@@ -35,11 +33,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	};
 };
 
-const META_TITLE = 'View this video created on stream.new';
-const Playback: React.FC<Props> = ({playbackId, shareUrl, poster}) => {
+const META_TITLE = 'Remotion Showcase Upload';
+const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-	const [isCopied, setIsCopied] = useState(false);
 	const [openReport, setOpenReport] = useState(false);
 	const copyTimeoutRef = useRef<number | null>(null);
 	const router = useRouter();
@@ -71,20 +68,6 @@ const Playback: React.FC<Props> = ({playbackId, shareUrl, poster}) => {
 
 	const showLoading = !isLoaded && !errorMessage;
 
-	const copyUrl = () => {
-		copy(shareUrl, {message: 'Copy'});
-		setIsCopied(true);
-		/*
-		 * We need a ref to the setTimeout because if the user
-		 * navigates away before the timeout expires we will
-		 * clear it out
-		 */
-		copyTimeoutRef.current = window.setTimeout(() => {
-			setIsCopied(false);
-			copyTimeoutRef.current = null;
-		}, 5000);
-	};
-
 	const startTime =
 		(router.query?.time && parseFloat(router.query.time as string)) || 0;
 
@@ -108,16 +91,6 @@ const Playback: React.FC<Props> = ({playbackId, shareUrl, poster}) => {
 					/>
 				)}
 				<div className="actions">
-					{!openReport && (
-						<a
-							onClick={copyUrl}
-							onKeyPress={copyUrl}
-							role="button"
-							tabIndex={0}
-						>
-							{isCopied ? 'Copied to clipboard' : 'Copy video URL'}
-						</a>
-					)}
 					{!openReport && (
 						<a
 							onClick={() => setOpenReport(!openReport)}

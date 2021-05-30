@@ -59,7 +59,9 @@ const Button = forwardRef<ButtonOrAnchor, Props>((props, ref) => {
 					a,
 					button {
 						font-size: 26px;
-						font-family: Akkurat;
+						font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+							Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+							sans-serif;
 						line-height: 33px;
 						background: #fff;
 						border: 2px solid ${disabled ? '#b0b0b0' : '#222222'};

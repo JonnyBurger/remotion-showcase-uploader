@@ -1,12 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {useState} from 'react';
 import {useDropzone} from 'react-dropzone';
 import {MUX_HOME_PAGE_URL} from '../constants';
 import {breakpoints, transitionDuration} from '../style-vars';
 import Asterisk from './asterisk';
-import InfoModal from './info-modal';
 
 const AsteriskLink: React.FC = () => {
 	return <Asterisk />;
@@ -39,7 +37,6 @@ const Layout: React.FC<Props> = ({
 	children,
 }) => {
 	const router = useRouter();
-	const [isModalOpen, setModalOpen] = useState(false);
 	const {getRootProps, isDragActive} = useDropzone({onDrop: onFileDrop});
 	const isDroppablePage = Boolean(onFileDrop);
 	const containerProps = isDroppablePage ? getRootProps() : {};
@@ -63,12 +60,9 @@ const Layout: React.FC<Props> = ({
 			</Head>
 			<div className="container" {...containerProps}>
 				<div className={`drag-overlay ${isDragActive ? 'active' : ''}`}>
-					<h1>Upload to stream.new</h1>
+					<h1>Upload</h1>
 				</div>
 
-				<div className="modal-wrapper">
-					<InfoModal close={() => setModalOpen(false)} />
-				</div>
 				<main>
 					<div className={`${centered ? 'content-wrapper-centered' : ''}`}>
 						{children}
@@ -85,13 +79,16 @@ const Layout: React.FC<Props> = ({
 								</div>
 							) : (
 								<>
-									<div className="footer-link info">
-										<a role="presentation" onClick={() => setModalOpen(true)}>
-											Info
-										</a>
+									<div>
+										<Link href="/">
+											<a style={{mixBlendMode: 'normal'}}>
+												<AsteriskLink />
+											</a>
+										</Link>
 									</div>
+									<div style={{width: 20}} />
 									<div className="footer-link mux">
-										Uploader adapted from <a href={MUX_HOME_PAGE_URL}>Mux</a>
+										Uploader by <a href={MUX_HOME_PAGE_URL}>Mux</a>
 									</div>
 									<div className="divider" />
 									<div className="footer-link terms">
@@ -102,24 +99,11 @@ const Layout: React.FC<Props> = ({
 								</>
 							)}
 						</div>
-						<div>
-							<Link href="/">
-								<AsteriskLink />
-							</Link>
-						</div>
 					</footer>
 				</div>
 
 				<style jsx>
 					{`
-						.modal-wrapper {
-							display: ${isModalOpen ? 'flex' : 'none'};
-							position: absolute;
-							top: 0;
-							height: 100%;
-							z-index: 2;
-							width: 100%;
-						}
 						.content-wrapper-centered {
 							display: flex;
 							flex-direction: column;
@@ -154,7 +138,7 @@ const Layout: React.FC<Props> = ({
 						}
 
 						main {
-							padding: 20px;
+							padding: 40px;
 							margin-bottom: -${FOOTER_HEIGHT};
 							height: 100%;
 						}
@@ -179,14 +163,16 @@ const Layout: React.FC<Props> = ({
 							display: flex;
 							align-items: center;
 						}
-						.nav > .footer-link {
-							padding-right: 40px;
-						}
 
 						.divider {
-							display: none;
+							display: block;
+							margin: 0 20px;
+							height: 26px;
+							width: 2px;
+							mix-blend-mode: exclusion;
+							background-color: #f8f8f8;
+							opacity: 0.4;
 						}
-
 						.footer-link {
 							font-size: 26px;
 							line-height: 33px;
@@ -201,58 +187,36 @@ const Layout: React.FC<Props> = ({
 							color: #f8f8f8;
 							cursor: pointer;
 							text-decoration: none;
-						}
-
-						.footer-link.mux {
-							display: none;
-						}
-
-						.footer-link.terms {
-							display: none;
+							border-bottom: 2px solid #f8f8f8;
 						}
 
 						.footer-link.back a {
-							border-bottom: none;
+							border-bottom: 2px solid #f8f8f8;
 						}
 
-						@media only screen and (min-width: ${breakpoints.md}px) {
-							.drag-overlay h1 {
-								font-size: 96px;
-								line-height: 120px;
-							}
-							.nav > .footer-link {
-								padding-right: 0;
-							}
+						.drag-overlay h1 {
+							font-size: 96px;
+							line-height: 120px;
+						}
+						.nav > .footer-link {
+							padding-right: 0;
+						}
 
-							.footer-link a,
-							.footer-link a:visited {
-								border-bottom: 2px solid #f8f8f8;
-							}
+						.footer-link a,
+						.footer-link a:visited {
+							border-bottom: 2px solid #f8f8f8;
+						}
 
-							.divider {
-								display: block;
-								margin: 0 20px;
-								height: 26px;
-								width: 2px;
-								mix-blend-mode: exclusion;
-								background-color: #f8f8f8;
-								opacity: 0.4;
-							}
+						.footer-link.mux {
+							display: block;
+						}
 
-							.footer-link.info {
-								display: none;
-							}
-							.footer-link.mux {
-								display: block;
-							}
+						.footer-link.terms {
+							display: block;
+						}
 
-							.footer-link.terms {
-								display: block;
-							}
-
-							.footer-link a:hover {
-								opacity: 0.5;
-							}
+						.footer-link a:hover {
+							opacity: 0.5;
 						}
 
 						@keyframes rotation {
@@ -287,7 +251,9 @@ const Layout: React.FC<Props> = ({
 						a:visited {
 							padding: 0;
 							margin: 0;
-							font-family: Akkurat;
+							font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI',
+								Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+								sans-serif;
 						}
 
 						a,
@@ -308,7 +274,9 @@ const Layout: React.FC<Props> = ({
 						}
 
 						h1 {
-							font-family: Akkurat;
+							font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI',
+								Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+								sans-serif;
 							font-style: normal;
 							font-weight: normal;
 							font-size: 36px;
@@ -319,7 +287,9 @@ const Layout: React.FC<Props> = ({
 						}
 
 						h2 {
-							font-family: Akkurat;
+							font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI',
+								Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+								sans-serif;
 							font-style: normal;
 							font-weight: normal;
 							font-size: 20px;
@@ -328,7 +298,9 @@ const Layout: React.FC<Props> = ({
 
 						select {
 							padding: 5px;
-							font-family: Akkurat;
+							font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI',
+								Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+								sans-serif;
 							background: transparent;
 							font-size: 20px;
 							color: #222;
@@ -357,7 +329,7 @@ const Layout: React.FC<Props> = ({
 								font-size: 5vw;
 								line-height: 6vw;
 								text-align: left;
-								max-width: 45vw;
+								max-width: 60vw;
 							}
 							p {
 								font-size: 26px;

@@ -40,8 +40,18 @@ const Index: React.FC<Props> = () => {
 		<Layout onFileDrop={onDrop}>
 			<div>
 				<div>
-					<h1>Add a video.</h1>
-					<h1>Get a shareable link to stream it.</h1>
+					<h1>Remotion Showcase</h1>
+					<h1>Uploader</h1>
+					<h2 style={{maxWidth: '70vw'}}>
+						If you{"'"}d like to submit your Remotion creation to the showcase,
+						use this page to upload your video. We will host it on a CDN,
+						generate a thumbnail and animated GIF hover preview.
+					</h2>
+					<h2 style={{maxWidth: '70vw'}}>
+						After the video has been uploaded, grab the {"'"}muxId{"'"} and make
+						a pull request to the Remotion docs. We will review your PR within a
+						few days.
+					</h2>
 				</div>
 				<div className="cta">
 					<div className="drop-notice">
@@ -63,6 +73,10 @@ const Index: React.FC<Props> = () => {
 			</div>
 			<style jsx>
 				{`
+					h1 {
+						font-weight: bold;
+						line-height: 1.2;
+					}
 					input {
 						display: none;
 					}
