@@ -143,7 +143,7 @@ const UploadProgressFullpage: React.FC<Props> = ({file, resetPage}) => {
 	}, [file, startFileValidation, startUpload]);
 
 	return (
-		<Layout centered spinningLogo>
+		<Layout centered>
 			{errorMessage || error ? (
 				<div>
 					<h1>Oops there was a problem uploading your file!</h1>

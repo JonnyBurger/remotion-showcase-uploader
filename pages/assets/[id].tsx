@@ -71,7 +71,7 @@ const Asset: React.FC<Props> = () => {
 	}
 
 	return (
-		<Layout centered darkMode={isDarkMode} spinningLogo>
+		<Layout centered darkMode={isDarkMode}>
 			<FullpageLoader text="Preparing" />
 		</Layout>
 	);
