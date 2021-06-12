@@ -107,7 +107,7 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 					<h2>Submit this video to the showcase</h2>
 					<ol>
 						<li>Click <a target="_blank" href="https://github.com/remotion-dev/remotion/blob/main/packages/docs/src/data/showcase-videos.tsx">here</a> and then click the pen icon to edit the file.</li>
-						<li>Add the following snippet to the showcaseVideos array. We have already filled in the video ID and the dimensions.</li>
+						<li>Add the following snippet to the <strong>end</strong> of the showcaseVideos array. We have already filled in the video ID and the dimensions.</li>
 					<pre>
 						{`
 {
@@ -143,11 +143,20 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 },
 						`}
 					</pre>
-					<li>Replace the placeholders in angle brackets with accurate description.</li>
-
+					<li>Replace the placeholders in angle brackets with accurate description. Guidelines:
+						<ul>
+							<li>Title: Max 80 characters, no emoji, no all caps</li>
+							<li>Description: Max 280 characters, use neutral language, focus on the Remotion usecase.</li>
+							<li>Height, width and maxId: Should not be altered</li>
+						</ul>
+					</li>
+					Our CI will validate these rules, so we cannot merge any submissions that fail these guidelines.
+					<li>Submit a pull request! Thank you!</li>
 					</ol>
+					<div>The videos will be reshuffled every day, so sometimes your video will be at the bottom, sometimes it will be at the top. By submitting, <br /> you agree that we can host your video and cross-post it (with attribution) to other platforms, like our Instagram.</div>
 				</div>
-			
+				<br /><br /><br /><br />
+				<hr />
 
 				<div className="actions">
 					{!openReport && (
@@ -197,6 +206,11 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 						background-color: rgb(0, 0, 0, 0.1);
 						padding-left: 10px;
 						padding-right: 10px;
+					}
+					ol li {
+						margin-top: 12px;
+						margin-bottom: 12px;
+						line-height: 1.5;
 					}
 				`}
 			</style>
