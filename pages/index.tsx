@@ -48,9 +48,8 @@ const Index: React.FC<Props> = () => {
 						generate a thumbnail and animated GIF hover preview.
 					</h2>
 					<h2 style={{maxWidth: '70vw'}}>
-						After the video has been uploaded, grab the {"'"}muxId{"'"} and make
-						a pull request to the Remotion docs. We will review your PR within a
-						few days.
+						After the video has been uploaded, we{"'"}ll give you more instructions on how to add your video to the showcase.
+						
 					</h2>
 				</div>
 				<div className="cta">

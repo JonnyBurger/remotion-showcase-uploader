@@ -45,6 +45,7 @@ const UploadPage: React.FC<Props> = ({children}) => {
 						text-align: center;
 						min-height: 230px;
 					}
+				
 				`}
 			</style>
 		</Layout>

@@ -109,14 +109,14 @@ const Layout: React.FC<Props> = ({
 							display: flex;
 							flex-direction: column;
 							align-items: center;
-							height: 100%;
+							min-height: 100%;
 						}
 						.container {
 							transition: background ${transitionDuration} ease;
 							outline: none;
 						}
 						.drag-overlay {
-							height: 100%;
+							min-height: 100%;
 							width: 100%;
 							position: absolute;
 							z-index: 1;
@@ -141,13 +141,12 @@ const Layout: React.FC<Props> = ({
 						main {
 							padding: 40px;
 							margin-bottom: -${FOOTER_HEIGHT};
-							height: 100%;
 						}
 
 						.footer-wrapper {
 							width: 100%;
+							margin-top: 80px;
 						}
-
 						footer {
 							width: 100%;
 							display: flex;
@@ -178,6 +177,7 @@ const Layout: React.FC<Props> = ({
 							mix-blend-mode: exclusion;
 							color: #f8f8f8;
 							opacity: 0.85;
+						
 						}
 
 						.footer-link a,
@@ -236,7 +236,7 @@ const Layout: React.FC<Props> = ({
 						#__next,
 						.container {
 							background: ${darkMode ? '#111' : '#f8f8f8'};
-							height: 100%;
+							min-height: 100%;
 							-webkit-font-smoothing: antialiased;
 						}
 						p {

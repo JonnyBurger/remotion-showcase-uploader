@@ -104,7 +104,10 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 				<div style={{
 					color: 'white'
 				}}>
-					
+					<h2>Submit this video to the showcase</h2>
+					<ol>
+						<li>Click <a target="_blank" href="https://github.com/remotion-dev/remotion/blob/main/packages/docs/src/data/showcase-videos.tsx">here</a> and then click the pen icon to edit the file.</li>
+						<li>Add the following snippet to the showcaseVideos array. We have already filled in the video ID and the dimensions.</li>
 					<pre>
 						{`
 {
@@ -140,7 +143,11 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 },
 						`}
 					</pre>
+					<li>Replace the placeholders in angle brackets with accurate description.</li>
+
+					</ol>
 				</div>
+			
 
 				<div className="actions">
 					{!openReport && (
@@ -181,6 +188,15 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 						flex-grow: 1;
 						align-items: center;
 						justify-content: center;
+					}
+				`}
+			</style>
+			<style jsx>
+				{`						
+					pre {
+						background-color: rgb(0, 0, 0, 0.1);
+						padding-left: 10px;
+						padding-right: 10px;
 					}
 				`}
 			</style>
