@@ -37,9 +37,15 @@ const META_TITLE = 'Remotion Showcase Upload';
 const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const [size, setSize] = useState<null | {
+		width: number;
+		height: number
+	}>(null)
 	const [openReport, setOpenReport] = useState(false);
 	const copyTimeoutRef = useRef<number | null>(null);
 	const router = useRouter();
+
 
 	useEffect(() => {
 		return () => {
@@ -50,7 +56,7 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	if (router.isFallback) {
 		return (
 			<Layout
-				metaTitle="View this video created on stream.new"
+				metaTitle="View this video"
 				image={poster}
 				centered
 				darkMode
@@ -71,6 +77,10 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	const startTime =
 		(router.query?.time && parseFloat(router.query.time as string)) || 0;
 
+
+	const currentDate = new Date()
+	const dateString = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`
+
 	return (
 		<Layout
 			metaTitle={META_TITLE}
@@ -88,8 +98,50 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 						currentTime={startTime}
 						onLoaded={() => setIsLoaded(true)}
 						onError={onError}
+						onSize={s => setSize(s)}
 					/>
 				)}
+				<div style={{
+					color: 'white'
+				}}>
+					
+					<pre>
+						{`
+{
+	title: "<enter title>",
+	type: "mux_video",
+	muxId: "${playbackId}",
+	description: (
+		<>
+			Add a description here
+		</>
+	),
+	height: ${size ? size.height : 'Loading, please wait...'},
+	width: ${size ? size.width : 'Loading please wait...'},
+	submittedOn: new Date("${dateString}"),
+	links: [
+		{
+			type: "source_code",
+			url: "<add github url or delete this object>",
+		},
+		{
+			type: "video",
+			url: "<add video link or delete this object>",
+		},
+		{
+			type: "website",
+			url: "<add product link or delete this object>",
+		},
+		{
+			type: "tutorial",
+			url: "<add link to tutorial or delete this object>",
+		},
+	],
+},
+						`}
+					</pre>
+				</div>
+
 				<div className="actions">
 					{!openReport && (
 						<a

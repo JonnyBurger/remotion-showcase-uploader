@@ -34,6 +34,7 @@ type Props = {
 	currentTime?: number;
 	onLoaded: () => void;
 	onError: (error: ErrorEvent) => void;
+	onSize: (dim: {width: number; height: number}) => void;
 };
 
 type SizedEvent = {
@@ -44,7 +45,7 @@ type SizedEvent = {
 };
 
 const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
-	({playbackId, poster, currentTime, onLoaded, onError}, ref) => {
+	({playbackId, poster, currentTime, onLoaded, onError, onSize}, ref) => {
 		const videoRef = useRef<HTMLVideoElementWithPlyr>(null);
 		const metaRef = useCombinedRefs(ref, videoRef);
 		const playerRef = useRef<Plyr | null>(null);
@@ -60,6 +61,7 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 			(event: SizedEvent) => {
 				const [w, h] = [event.target.width, event.target.height];
 				if (w && h) {
+					onSize({width: w, height: h})
 					setIsVertical(w / h < 1);
 					onLoaded();
 				} else {

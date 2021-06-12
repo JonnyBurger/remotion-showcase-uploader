@@ -53,7 +53,7 @@ const baseBlocks = ({
 		type: 'section',
 		text: {
 			type: 'mrkdwn',
-			text: 'New video created on stream.new',
+			text: 'New video submitted to Showcase',
 		},
 	},
 	{
@@ -95,7 +95,7 @@ const baseBlocks = ({
 				text: {
 					type: 'plain_text',
 					emoji: true,
-					text: 'View on stream.new',
+					text: 'View on Remotion Showcase Uploader',
 				},
 				style: 'primary',
 				url: `${HOST_URL}/v/${playbackId}`,
@@ -141,7 +141,7 @@ export const sendSlackAssetReady = async ({
 
 	await got.post(slackWebhook, {
 		json: {
-			text: `New video created on stream.new. <${HOST_URL}/v/${playbackId}|View on stream.new>`,
+			text: `New video submitted to the Showcase. <${HOST_URL}/v/${playbackId}|View>`,
 			icon_emoji: 'see_no_evil',
 			blocks,
 		},
@@ -165,7 +165,7 @@ export const sendAbuseReport = async ({
 
 	await got.post(slackWebhook, {
 		json: {
-			text: `Reported for abuse: ${reason}. ${comment}. ${playbackId} <${HOST_URL}/v/${playbackId}|View on stream.new>`,
+			text: `Reported for abuse: ${reason}. ${comment}. ${playbackId} <${HOST_URL}/v/${playbackId}|View>`,
 			icon_emoji: 'rotating_light',
 		},
 	});

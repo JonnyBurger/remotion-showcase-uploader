@@ -45,6 +45,7 @@ const Layout: React.FC<Props> = ({
 		<>
 			<Head>
 				<title>Remotion Showcase Uploader</title>
+				<link rel="shortcut icon" type="image/x-icon" href="https://www.remotion.dev/img/logo-small.png" />
 				{metaTitle && <meta property="twitter:title" content={metaTitle} />}
 				{metaDescription && (
 					<meta property="og:description" content={description} />
@@ -144,9 +145,7 @@ const Layout: React.FC<Props> = ({
 						}
 
 						.footer-wrapper {
-							position: absolute;
 							width: 100%;
-							bottom: 0;
 						}
 
 						footer {

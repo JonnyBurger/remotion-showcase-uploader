@@ -8,7 +8,7 @@ type Props = {
 
 const UploadPage: React.FC<Props> = ({children}) => {
 	return (
-		<Layout title="stream.new" description="Upload a video and share a URL">
+		<Layout title="Remotion Showcase Uploader" description="Upload a video and share a URL">
 			<div className="wrapper">
 				<div className="about-mux">
 					<p>
@@ -28,17 +28,6 @@ const UploadPage: React.FC<Props> = ({children}) => {
 						</a>
 						. When the upload is complete your video will be processed by Mux
 						and available for playback on a sharable URL.
-					</p>
-					<p>
-						To learn more,{' '}
-						<a
-							href="https://github.com/muxinc/examples/tree/master/stream.new"
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							check out the source code on GitHub
-						</a>
-						.
 					</p>
 				</div>
 				<div className="children">{children}</div>
