@@ -38,14 +38,14 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const [size, setSize] = useState<null | {
-		width: number;
-		height: number
-	}>(null)
+	const [size, setSize] =
+		useState<null | {
+			width: number;
+			height: number;
+		}>(null);
 	const [openReport, setOpenReport] = useState(false);
 	const copyTimeoutRef = useRef<number | null>(null);
 	const router = useRouter();
-
 
 	useEffect(() => {
 		return () => {
@@ -55,12 +55,7 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 
 	if (router.isFallback) {
 		return (
-			<Layout
-				metaTitle="View this video"
-				image={poster}
-				centered
-				darkMode
-			>
+			<Layout metaTitle="View this video" image={poster} centered darkMode>
 				<FullpageLoader text="Loading player..." />;
 			</Layout>
 		);
@@ -77,9 +72,13 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 	const startTime =
 		(router.query?.time && parseFloat(router.query.time as string)) || 0;
 
-
-	const currentDate = new Date()
-	const dateString = `${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}-${currentDate.getFullYear()}`
+	const currentDate = new Date();
+	const dateString = `${(currentDate.getMonth() + 1)
+		.toString()
+		.padStart(2, '0')}-${String(currentDate.getDate()).padStart(
+		2,
+		'0'
+	)}-${currentDate.getFullYear()}`;
 
 	return (
 		<Layout
@@ -98,31 +97,42 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 						currentTime={startTime}
 						onLoaded={() => setIsLoaded(true)}
 						onError={onError}
-						onSize={s => setSize(s)}
+						onSize={(s) => setSize(s)}
 					/>
 				)}
-				<div style={{
-					color: 'white'
-				}}>
+				<div
+					style={{
+						color: 'white',
+					}}
+				>
 					<h2>Submit this video to the showcase</h2>
 					<ol>
-						<li>Click <a target="_blank" href="https://github.com/remotion-dev/remotion/blob/main/packages/docs/src/data/showcase-videos.tsx">here</a> and then click the pen icon to edit the file.</li>
-						<li>Add the following snippet to the <strong>end</strong> of the showcaseVideos array. We have already filled in the video ID and the dimensions.</li>
-					<pre>
-						{`
+						<li>
+							Click{' '}
+							<a
+								target="_blank"
+								href="https://github.com/remotion-dev/remotion/blob/main/packages/docs/src/data/showcase-videos.tsx"
+							>
+								here
+							</a>{' '}
+							and then click the pen icon to edit the file.
+						</li>
+						<li>
+							Add the following snippet to the <strong>end</strong> of the
+							showcaseVideos array. We have already filled in the video ID and
+							the dimensions.
+						</li>
+						<pre>
+							{`
 {
-	title: "<enter title>",
-	type: "mux_video",
-	muxId: "${playbackId}",
-	description: (
-		<>
-			Add a description here
-		</>
-	),
-	height: ${size ? size.height : 'Loading, please wait...'},
-	width: ${size ? size.width : 'Loading please wait...'},
-	submittedOn: new Date("${dateString}"),
-	links: [
+	"title": "<enter title>",
+	"type": "mux_video",
+	"muxId": "${playbackId}",
+	"description": "Add a description here",
+	"height": ${size ? size.height : 'Loading, please wait...'},
+	"width": ${size ? size.width : 'Loading please wait...'},
+	"submittedOn": new Date("${dateString}"),
+	"links": [
 		{
 			type: "source_code",
 			url: "<add github url or delete this object>",
@@ -140,22 +150,41 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 			url: "<add link to tutorial or delete this object>",
 		},
 	],
+	author: {
+		"url": "<link your website or social media profile>",
+		"name": "<Enter your name or organization>"
+	}
 },
 						`}
-					</pre>
-					<li>Replace the placeholders in angle brackets with accurate description. Guidelines:
-						<ul>
-							<li>Title: Max 80 characters, no emoji, no all caps</li>
-							<li>Description: Max 280 characters, use neutral language, focus on the Remotion usecase.</li>
-							<li>Height, width and maxId: Should not be altered</li>
-						</ul>
-					</li>
-					Our CI will validate these rules, so we cannot merge any submissions that fail these guidelines.
-					<li>Submit a pull request! Thank you!</li>
+						</pre>
+						<li>
+							Replace the placeholders in angle brackets with accurate
+							description. Guidelines:
+							<ul>
+								<li>Title: Max 80 characters, no emoji, no all caps</li>
+								<li>
+									Description: Max 280 characters, use neutral language, focus
+									on the Remotion usecase.
+								</li>
+								<li>Height, width and maxId: Should not be altered</li>
+							</ul>
+						</li>
+						Our CI will validate these rules, so we cannot merge any submissions
+						that fail these guidelines.
+						<li>Submit a pull request! Thank you!</li>
 					</ol>
-					<div>The videos will be reshuffled every day, so sometimes your video will be at the bottom, sometimes it will be at the top. By submitting, <br /> you agree that we can host your video and cross-post it (with attribution) to other platforms, like our Instagram.</div>
+					<div>
+						The videos will be reshuffled every day, so sometimes your video
+						will be at the bottom, sometimes it will be at the top. By
+						submitting, <br /> you agree that we can host your video and
+						cross-post it (with attribution) to other platforms, like our
+						Instagram.
+					</div>
 				</div>
-				<br /><br /><br /><br />
+				<br />
+				<br />
+				<br />
+				<br />
 				<hr />
 
 				<div className="actions">
@@ -201,7 +230,7 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 				`}
 			</style>
 			<style jsx>
-				{`						
+				{`
 					pre {
 						background-color: rgb(0, 0, 0, 0.1);
 						padding-left: 10px;
