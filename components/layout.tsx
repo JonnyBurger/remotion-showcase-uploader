@@ -29,7 +29,7 @@ const Layout: React.FC<Props> = ({
 	description,
 	metaTitle,
 	metaDescription,
-	image = '/stream-new-og-image.png',
+	image = '/og-image.png',
 	onFileDrop,
 	darkMode,
 	centered,
@@ -45,7 +45,11 @@ const Layout: React.FC<Props> = ({
 		<>
 			<Head>
 				<title>Remotion Showcase Uploader</title>
-				<link rel="shortcut icon" type="image/x-icon" href="https://www.remotion.dev/img/logo-small.png" />
+				<link
+					rel="shortcut icon"
+					type="image/x-icon"
+					href="https://www.remotion.dev/img/logo-small.png"
+				/>
 				{metaTitle && <meta property="twitter:title" content={metaTitle} />}
 				{metaDescription && (
 					<meta property="og:description" content={description} />
@@ -177,7 +181,6 @@ const Layout: React.FC<Props> = ({
 							mix-blend-mode: exclusion;
 							color: #f8f8f8;
 							opacity: 0.85;
-						
 						}
 
 						.footer-link a,
