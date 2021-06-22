@@ -125,14 +125,14 @@ const Playback: React.FC<Props> = ({playbackId, poster}) => {
 						<pre>
 							{`
 {
-	"title": "<enter title>",
-	"type": "mux_video",
-	"muxId": "${playbackId}",
-	"description": "Add a description here",
-	"height": ${size ? size.height : 'Loading, please wait...'},
-	"width": ${size ? size.width : 'Loading please wait...'},
-	"submittedOn": new Date("${dateString}"),
-	"links": [
+	title: "<enter title>",
+	type: "mux_video",
+	muxId: "${playbackId}",
+	description: "Add a description here",
+	height: ${size ? size.height : 'Loading, please wait...'},
+	width: ${size ? size.width : 'Loading please wait...'},
+	submittedOn: new Date("${dateString}"),
+	links: [
 		{
 			type: "source_code",
 			url: "<add github url or delete this object>",
