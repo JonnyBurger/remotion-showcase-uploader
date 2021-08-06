@@ -13,7 +13,10 @@ export default async (
 		case 'POST':
 			try {
 				const upload = await Video.Uploads.create({
-					new_asset_settings: {playback_policy: 'public'},
+					new_asset_settings: {
+						playback_policy: 'public',
+						mp4_support: 'standard',
+					},
 					cors_origin: '*',
 				});
 				res.json({
