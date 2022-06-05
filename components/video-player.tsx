@@ -61,7 +61,7 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 			(event: SizedEvent) => {
 				const [w, h] = [event.target.width, event.target.height];
 				if (w && h) {
-					onSize({width: w, height: h})
+					onSize({width: w, height: h});
 					setIsVertical(w / h < 1);
 					onLoaded();
 				} else {
@@ -69,7 +69,7 @@ const VideoPlayer = forwardRef<HTMLVideoElementWithPlyr, Props>(
 					console.error('Error getting img dimensions', event); // eslint-disable-line no-console
 				}
 			},
-			[onLoaded]
+			[onLoaded, onSize]
 		);
 
 		/*
